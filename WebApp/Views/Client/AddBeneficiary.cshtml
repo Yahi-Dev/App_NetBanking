@@ -1,0 +1,61 @@
+﻿@using NetBanking.Core.Application.ViewModels.Beneficiary;
+@model SaveBeneficiaryViewModel
+
+
+
+<!-- jQuery -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+@if (Model.HasError)
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '@Model.Error',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    </script>
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card" style="background-color: white;">
+                <div class="card-header bg-info text-light text-center">
+                    <h4>Agregar beneficiario</h4>
+                </div>
+                <div class="card-body">
+                    <form method="post" asp-action="AddBeneficiary">
+
+                        <input asp-for="UserId" value="@Model.UserId" hidden />
+
+                        <div class="mb-3">
+                            <label asp-for="BeneficiaryAccountId" class="form-label text-dark">Cuenta beneficiaria</label>
+                            <input asp-for="BeneficiaryAccountId" class="form-control" style="background-color: white; color: black;" />
+                            <span asp-validation-for="BeneficiaryAccountId" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                        <a asp-controller="Client" asp-action="Beneficiaries" class="btn btn-warning">Volver a inicio</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<style>
+    .card-header.bg-info {
+        background: -webkit-linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+        background: linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+    }
+</style>

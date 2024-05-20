@@ -1,0 +1,168 @@
+﻿@using NetBanking.Core.Application.Dtos.Account
+@using NetBanking.Core.Application.ViewModels.Users;
+@using NetBanking.Core.Application.Helpers;
+@using NetBanking.Core.Application.Enums;
+@model SaveUserViewModel
+
+@{
+    ViewData["Title"] = "Registro";
+    bool editMode = Model != null && Model.IdCard != null;
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card" style="background-color: white;">
+                <div class="card-header bg-info text-light text-center">
+                    <strong>@(editMode ? $"Edit your pruducer {Model.FirstName}" : "Add a new User")</strong>
+                </div>
+                <div class="card-body">
+                    <div class="">
+                        @if (Model.HasError)
+                        {
+                            <script>
+                                Swal.fire({
+                                    icon: 'error',
+                                    title: 'Error!',
+                                    text: ' @Model.Error',
+                                    showConfirmButton: true,
+                                    timer: 5000
+                                });
+                            </script>
+                        }
+                        <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action=@(editMode ? "Edit":"Register")>
+
+                            <div class="mb-3">
+                                <input asp-for="ImageURL" class="form-control" type="hidden" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="FirstName" class="form-label">Nombre: </label>
+                                <input asp-for="FirstName" class="form-control" />
+                                <span asp-validation-for="FirstName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="LastName" class="form-label">Apellido: </label>
+                                <input asp-for="LastName" class="form-control" />
+                                <span asp-validation-for="LastName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="UserName" class="form-label">Nombre de usuario: </label>
+                                <input asp-for="UserName" class="form-control" />
+                                <span asp-validation-for="UserName" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="IdCard" class="form-label">Cedula:</label>
+                                <input asp-for="IdCard" class="form-control" />
+                                <span asp-validation-for="IdCard" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="Email" class="form-label">Correo: </label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="PhoneNumber" class="form-label">Telefono: </label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+                            </div>
+
+                            <div class="mb-3">
+                                <input asp-for="Id" class="form-control" type="hidden" />
+                            </div>
+
+                            <div class="mb-3">
+                                <label asp-for="formFile" class="form-label">Upload a profile picture (optional): </label>
+                                <input asp-for="formFile" class="form-control" />
+                                <span asp-validation-for="formFile" class="text-danger"></span>
+                            </div>
+
+                            @if (editMode == false)
+                            {
+                                <div class="mb-3">
+                                    <label asp-for="Role" class="form-label">Choose the user role</label>
+                                    <select asp-for="Role" class="form-select" id="userRoleSelect">
+                                        <option value="#">Choose an option</option>
+                                        <option value="@RolesEnum.Client.ToString()">Client</option>
+                                        <option value="@RolesEnum.Admin.ToString()">Admin</option>
+                                    </select>
+                                </div>
+                            }
+
+                            @if (editMode == true)
+                            {
+                                <div class="mb-3">
+                                    <label asp-for="Password" class="form-label">Contraseña: </label>
+                                    <input asp-for="Password" type="password" class="form-control" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label">Confirmar contraseña: </label>
+                                    <input asp-for="ConfirmPassword" class="form-control"/>
+                                </div>
+                            }
+                            else
+                            {
+                                <div id="initialAmountDiv" class="mb-3" style="display: none;">
+                                    <label asp-for="InitialAmount" class="form-label">Initial Amount</label>
+                                    <input asp-for="InitialAmount" class="form-control" />
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="Password" class="form-label">Contraseña</label>
+                                    <input asp-for="Password" placeholder="Password" class="form-control" />
+                                    <span asp-validation-for="Password" class="text-danger"></span>
+                                </div>
+
+                                <div class="mb-3">
+                                    <label asp-for="ConfirmPassword" class="form-label">Confirmar Contraseña</label>
+                                    <input asp-for="ConfirmPassword" placeholder="Confirm Password" class="form-control" />
+                                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+
+                                </div>
+                            }
+
+                            <button type="submit" class="btn btn-primary">Guardar</button>
+                            <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atrás</a>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $('#userRoleSelect').change(function () {
+            var selectedRole = $(this).val();
+            if (selectedRole === "@RolesEnum.Client.ToString()") {
+                $('#initialAmountDiv').show();
+            } else {
+                $('#initialAmountDiv').hide();
+            }
+        });
+    });
+</script>
+
+<style>
+    .card-header.bg-info {
+        background: -webkit-linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+        background: linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+    }
+</style>

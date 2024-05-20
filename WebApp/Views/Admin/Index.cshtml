@@ -1,0 +1,298 @@
+﻿@using NetBanking.Core.Application.ViewModels.Users;
+@using NetBanking.Core.Application.Enums;
+@model ICollection<UserViewModel>;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<head>
+    <script src="https://kit.fontawesome.com/7302c44b99.js" crossorigin="anonymous"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="stylesheet" href="~/css/tableadmin.css" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+          rel="stylesheet" />
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+</head>
+
+
+
+<a class="btn btn-primary" asp-controller="Admin" asp-action="Register">New User <img src="~/Iconos/agregar-usuario.png" style="width: 30px; height: 30px; margin-left: 7px;" /></a>
+
+
+
+@Html.ValidationSummary(false, "", new { @class = "text-danger" })
+@if (ViewBag.Error == "Se ha cambiado el estado de la cuenta")
+{
+    <script>
+        Swal.fire({
+            icon: 'success',
+            title: 'Trabajo éxitoso!',
+            text: '@ViewBag.Error',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    </script>
+}
+@if (ViewBag.Error == "No puedes desactivar tu propia cuenta." || ViewBag.Error == "No se encontro el usuario.")
+{
+    <script>
+        Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: '@ViewBag.Error',
+            showConfirmButton: true,
+            timer: 5000
+        });
+    </script>
+}
+
+<!-- Basic Bootstrap Table -->
+<div class="card" style="margin-top: 50px;">
+    <h5 class="card-header"><img src="~/Iconos/lista.png" style="width: 30px; height: 30px; margin-right: 7px;" /> List Register</h5>
+    <div class="table-responsive text-nowrap">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Role</th>
+                    <th>Name and LastName</th>
+                    <th>Users</th>
+                    <th>Status</th>
+                    <th>Email</th>
+                    <th>Productos</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            @foreach (var user in Model)
+            {
+
+                <tbody class="table-border-bottom-0">
+                    <tr>
+                        <td>
+                            @foreach (var role in @user.Roles)
+                            {
+                                @if (role == RolesEnum.Client.ToString())
+                                {
+                                    <i class="me-3"><img src="~/Iconos/letra-c.png" style="width: 25px; height: 25px;" /></i>
+                                    <span class="fw-medium">Cliente</span>
+                                }
+                                @if (role == RolesEnum.Admin.ToString())
+                                {
+                                    <i class="me-3"><img src="~/Iconos/Angular_full_color_logo.svg.png" style="width: 25px; height: 25px;" /></i>
+                                    <span class="fw-medium">Administrador</span>
+                                }
+                                @role[0]
+                            }
+                        </td>
+                        <td>@user.FirstName @user.LastName</td>
+                        <td>
+                            <ul class="list-unstyled users-list m-0 avatar-group d-flex align-items-center">
+                                <li>
+                                    <img src="@user.ImageURL" class="rounded-circle" style="width: 35px; height: 35px;" />
+                                </li>
+                            </ul>
+                        </td>
+                        @if (user.IsActive == true)
+                        {
+                            <td><span class="badge bg-label-success me-1">Active</span></td>
+                        }
+                        @if (user.IsActive == false)
+                        {
+                            <td><span class="badge bg-label-danger me-1">Inactive</span></td>
+                        }
+                        <td><span class="">@user.Email</span></td>
+                        @foreach (var role in @user.Roles)
+                        {
+                            @if (role == RolesEnum.Client.ToString())
+                            {
+                                <td><a asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ViewProducts"><span class=""><span class="badge rounded-pill text-bg-info">Ver Productos</span></span></a></td>
+                            }
+                            else
+                            {
+                                <td><span class="badge rounded-pill text-bg-danger">Sin Productos</span></td>
+                            }
+                        }
+                    <td>
+                        <div class="dropdown">
+                                <button type="button" class="btn p-0 dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
+                                    <img src="~/Iconos/mas.png" style="width: 20px; height: 20px;" />
+                                </button>
+                            <div class="dropdown-menu">
+                                @if (user.IsActive == false)
+                                {
+                                        <a class="btn btn-outline-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/cambiar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Active</a>
+                                }
+                                @if (user.IsActive == true)
+                                {
+                                        <a class="btn btn-outline-info" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="ChangeStatus"><img src="~/Iconos/apagar.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Inactive</a>
+                                }
+                                    <a class="btn btn-outline-warning" asp-route-Id="@user.Id" asp-controller="Admin" asp-action="Edit"> <img src="~/Iconos/editar (2).png" style="width: 25px; height: 25px; margin-right: 7px;" /> Edit</a>
+                                    <a class="btn btn-outline-success asignarProductoBtn" data-route-id="@user.Id">
+                                        <img src="~/Iconos/icons8-asignación-entregado-48.png" style="width: 25px; height: 25px; margin-right: 7px;" /> Asignar producto
+                                    </a>
+
+                            </div>                                                                                                                                                              
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+            }
+        </table>
+    </div>
+</div>
+
+<input type="hidden" id="userIdInput">
+<!--/ Basic Bootstrap Table -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<style>
+
+    #profileimage {
+        width: 100px;
+        object-fit: cover;
+        height: 100px;
+        border-radius: 50%;
+    }
+
+    #card {
+        border-radius: 6px;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .carduser:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+</style>
+
+<script>
+    $(document).ready(function () {
+        $(".asignarProductoBtn").click(function (event) {
+            event.preventDefault();
+
+            var userId = $(this).data('route-id'); // Obtener el ID del usuario
+            $("#userIdInput").val(userId); // Establecer el ID del usuario en el input oculto
+            $("#userIdVisibleInput").val(userId); // Establecer el ID del usuario en el input visible
+
+            Swal.fire({
+                title: "Create Product",
+                html:
+                    '<select id="productoSelect" class="swal2-select" style="margin-bottom: 10px;" required>' +
+                    '<option value="" disabled selected><b>Select a option</b></option>' +
+                    '<option value="CreditCard">Credit Card</option>' +
+                    '<option value="Loan">Loan</option>' +
+                    '<option value="SavingsAccount">Savings Account</option>' +
+                    '</select>' +
+                    '<input id="montoInput" class="swal2-input" style="width: 150px;" placeholder="Amount" type="text" value="0.00">',
+                focusConfirm: false,
+                showCancelButton: true,
+                cancelButtonText: 'Cancel',
+                preConfirm: () => {
+                    const monto = document.getElementById('montoInput').value;
+                    const producto = document.getElementById('productoSelect').value;
+                    return { monto: monto, producto: producto };
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    if (result.value.producto === "Loan") {
+                        // Si la opción seleccionada es "Credit Card", enviar los datos al controlador
+                        var userId = $("#userIdInput").val();
+                        var monto = result.value.monto;
+                        $.ajax({
+                            url: '/Admin/SaveLoan',
+                            type: 'POST',
+                            data: { userId: userId, monto: monto },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se le asignado un prestamo al usuario",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire('Error al guardar la tarjeta de crédito');
+                            }
+                        });
+                    }
+                    if (result.value.producto === "CreditCard") {
+                        // Si la opción seleccionada es "Credit Card", enviar los datos al controlador
+                        var userId = $("#userIdInput").val();
+                        var monto = result.value.monto;
+                        $.ajax({
+                            url: '/Admin/SaveCreditCard',
+                            type: 'POST',
+                            data: { userId: userId, monto: monto },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se ha creado una tarjeta de credito",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire('Error al guardar la tarjeta de crédito');
+                            }
+                        });
+                    }
+                    if (result.value.producto === "SavingsAccount") {
+                        // Si la opción seleccionada es "Credit Card", enviar los datos al controlador
+                        var userId = $("#userIdInput").val();
+                        var monto = result.value.monto;
+                        $.ajax({
+                            url: '/Admin/ProductAddSavingAccount',
+                            type: 'POST',
+                            data: { userId: userId, monto: monto },
+                            success: function (response) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se ha creado la Cuenta de Ahorro",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            },
+                            error: function (xhr, status, error) {
+                                Swal.fire({
+                                    position: "top-end",
+                                    icon: "success",
+                                    title: "Se ha creado la Cuenta de Ahorro",
+                                    showConfirmButton: false,
+                                    timer: 1500
+                                });
+                            }
+                        });
+                    }
+                    else {
+                        Swal.fire(`You selected: ${result.value.producto} Amount: ${result.value.monto}`);
+                    }
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    console.log('Modal cerrado por el usuario');
+                }
+            });
+        });
+
+        $('#myModal').on('hidden.bs.modal', function () {
+            var userId = $("#userIdInput").val();
+            console.log("ID del usuario seleccionado: " + userId);
+        });
+    });
+</script>

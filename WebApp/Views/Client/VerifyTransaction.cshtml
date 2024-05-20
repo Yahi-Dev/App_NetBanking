@@ -1,0 +1,74 @@
+﻿
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirm Transaction</title>
+    <!-- Agregar enlaces a tus archivos CSS aquí -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 50px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333;
+            text-align: center;
+        }
+
+        h4 {
+            color: #666;
+            margin-top: 20px;
+        }
+
+        form {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        a.btn {
+            background-color: #6c757d;
+            color: #fff;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+        }
+
+        a.btn:hover {
+            background-color: #5a6268;
+        }
+    </style>
+</head>
+
+    <div class="container">
+        <h1>Confirm Transaction</h1>
+        <h4>Are you sure you wanna make this transaction to: <span id="name">@ViewBag.Name</span></h4>
+        <form asp-action="ExecuteTransaction" method="get">
+            <button type="submit">Confirmar</button>
+            <a class="btn" asp-action="Home">Cancelar</a>
+        </form>
+    </div>

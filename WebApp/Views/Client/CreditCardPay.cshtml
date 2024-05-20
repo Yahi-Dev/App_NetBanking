@@ -1,0 +1,103 @@
+﻿@using NetBanking.Core.Application.ViewModels.Transaction;
+@using NetBanking.Core.Domain.Enums;
+@model RealizeTransaction
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<!-- SweetAlert2 -->
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card" style="background-color: white;">
+                <div class="card-header bg-info text-light text-center">
+                    <h4>Pago de tarjeta de crédito</h4>
+                </div>
+                <div class="card-body">
+                    @if (Model.TransactionStatus.HasError)
+                    {
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: '@Model.TransactionStatus.Error',
+                                showConfirmButton: true,
+                                timer: 5000
+                            });
+                        </script>
+                    }
+                    <form method="post" asp-action="InitializeTransaction">
+
+                        <input asp-for="@Model.SaveTransactionViewModel.Type" value="@Model.SaveTransactionViewModel.Type" hidden />
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.SaveTransactionViewModel.ReceiverProductId" class="form-label text-dark">Elija la tarjeta de crédito que desee pagar</label>
+                            <select asp-for="@Model.SaveTransactionViewModel.ReceiverProductId" class="form-select" style="background-color: white; color: black;">
+                                @foreach (var item in Model.AllProducts.CreditCards)
+                                {
+                                    <option value="@item.Id" selected="@{
+                                        if(Model.SaveTransactionViewModel != null && Model.SaveTransactionViewModel.HasError)
+                                        {
+                                                @Model.SaveTransactionViewModel.EmissorProductId
+                                        }
+                                    }">Credit card: @item.Id</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.SaveTransactionViewModel.EmissorProductId" class="form-label text-dark">Elija desde qué cuenta va a pagar</label>
+                            <select asp-for="@Model.SaveTransactionViewModel.EmissorProductId" class="form-select" style="background-color: white; color: black;">
+                                @foreach (var item in Model.AllProducts.SavingsAccounts)
+                                {
+                                    <option value="@item.Id" selected="@{
+                                        if(Model.SaveTransactionViewModel != null && Model.SaveTransactionViewModel.HasError)
+                                        {
+                                                @Model.SaveTransactionViewModel.EmissorProductId
+                                        }
+                                    }">Savings account: @item.Id</option>
+                                }
+                                @foreach (var item in Model.AllProducts.CreditCards)
+                                {
+                                    <option value="@item.Id" selected="@{
+                                        if(Model.SaveTransactionViewModel != null && Model.SaveTransactionViewModel.HasError)
+                                        {
+                                                @Model.SaveTransactionViewModel.EmissorProductId
+                                        }
+                                    }">Credit card: @item.Id</option>
+                                }
+                            </select>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="@Model.SaveTransactionViewModel.Cantity" class="form-label text-dark">Cantidad</label>
+                            <input type="number" asp-for="@Model.SaveTransactionViewModel.Cantity" class="form-control" placeholder="@{
+                                if(Model.SaveTransactionViewModel != null && Model.SaveTransactionViewModel.HasError)
+                                {
+                                        @Model.SaveTransactionViewModel.Cantity
+                                }
+                            }" style="background-color: white; color: black;" />
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<style>
+    .card-header.bg-info {
+        background: -webkit-linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+        background: linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+    }
+</style>

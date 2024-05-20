@@ -1,0 +1,61 @@
+﻿@using NetBanking.Core.Application.Dtos.Account
+@using NetBanking.Core.Application.ViewModels.CreditCard;
+@using NetBanking.Core.Application.Helpers;
+@using NetBanking.Core.Application.Enums;
+@model SaveCreditCardViewModel;
+
+@{
+    ViewData["Title"] = "Registro";
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card" style="background-color: white;">
+                <div class="card-header bg-info text-light text-center">
+                    <h4>Registro de nuevo usuario</h4>
+                </div>
+                <div class="card-body">
+
+                    @Html.ValidationSummary(false, "", new { @class = "text-danger" })
+                    @if (Model.HasError)
+                    {
+                        <script>
+                            Swal.fire({
+                                icon: 'error',
+                                title: 'Error!',
+                                text: ' @Model.Error',
+                                showConfirmButton: true,
+                                timer: 5000
+                            });
+                        </script>
+                    }
+                    <form method="post" enctype="multipart/form-data" asp-controller="Admin" asp-action="SaveCreditCard">
+
+                        <div class="mb-3">
+                            <label asp-for="Limit" class="form-label text-dark">Please establish the limit of the credit card: </label>
+                            <input asp-for="Limit" class="form-control" style="background-color: white; color: black;" />
+                            <span asp-validation-for="Limit" class="text-danger"></span>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary">Registrarse</button>
+                        <a asp-controller="ProductAdd" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<style>
+    .card-header.bg-info {
+        background: -webkit-linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+        background: linear-gradient(45deg, #012169 0%, #00709e 60%, #00c1d5 100%);
+    }
+</style>

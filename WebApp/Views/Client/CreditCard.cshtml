@@ -1,0 +1,68 @@
+﻿@using NetBanking.Core.Application.Dtos.Account
+@using NetBanking.Core.Application.ViewModels.Users;
+@using NetBanking.Core.Application.Helpers;
+@using NetBanking.Core.Application.Enums;
+@model SaveUserViewModel
+
+@{
+    ViewData["Title"] = "Registro";
+    bool editMode = Model != null && Model.IdCard != null;
+}
+
+<div class="container-fluid">
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card border-2 shadow-sm">
+                <div class="card-header bg-dark text-light">
+                    <strong>@(editMode ? $"Edit your pruducer {Model.FirstName}" : "Add a new Producers")</strong>
+                </div>
+                <div class="card-body">
+
+                    @if (Model.HasError)
+                    {
+                        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                            <p>@Model.Error</p>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    }
+                    <form method="post" enctype="multipart/form-data" asp-controller="Client" asp-action=CreditCard>
+
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label">Nombre: </label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label">Apellido: </label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Id" class="form-label">IdCard:</label>
+                            <input asp-for="Id" class="form-control" type="hidden"/>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="IdCard" class="form-label">IdCard:</label>
+                            <input asp-for="IdCard" class="form-control" />
+                            <span asp-validation-for="IdCard" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label">Correo: </label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger"></span>
+                        </div>
+
+
+                        <button type="submit" class="btn btn-primary">Guardar</button>
+                        <a asp-controller="Admin" asp-action="Index" class="btn btn-warning">Volver atras</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

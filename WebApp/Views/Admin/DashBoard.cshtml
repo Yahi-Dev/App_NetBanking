@@ -1,0 +1,166 @@
+﻿@using NetBanking.Core.Application.ViewModels.Dashboard;
+@model DashboardViewModel;
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<head>
+    <script src="https://kit.fontawesome.com/7302c44b99.js" crossorigin="anonymous"></script>
+</head>
+
+<div class="container-fluid">
+    <div class="row offset-4">
+        <div class="col-md-3">
+            <div class="card blue-border cardstatistics bg-light">
+                <div class="card-body">
+                    <h5 class="text-secondary">Active users:</h5>
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-user-check fa-lg" style="color: #34ef63;"></i> <!-- Icono de usuarios -->
+                        <h3 class="card-text fw-bolder text-dark ms-2">@Model.ActiveClients</h3> <!-- Número de usuarios -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card red-border cardstatistics bg-light">
+                <div class="card-body">
+                    <h5 class="text-secondary">Inactive users:</h5>
+                    <div class="d-flex align-items-center">
+                        <i class="fa-solid fa-skull fa-lg" style="color: #e04e3e;"></i>
+                        <h3 class="card-text fw-bolder text-dark ms-2">@Model.InactiveClients</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="container card mt-4">
+    <div class="col-8 offset-2">
+        <div class="card-body">
+            <div class="row align-content-center">
+                <div class="mt-2 mb-2">
+                    <canvas id="barChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    const ctx = document.getElementById('barChart').getContext('2d');
+
+    const data = {
+        labels: [
+            'Active Clients',
+            'Inactive Clients',
+            'Assigned Products',
+            'All Payments',
+            'All Transaction',
+            'All Payments Today'
+        ],
+        datasets: [{
+            label: 'Data Overview',
+            data: [
+    @Model.ActiveClients,
+    @Model.InactiveClients,
+    @Model.AssignedProduct,
+    @Model.AllPaymentsNumber,
+    @Model.AllTransaction,
+    @Model.AllPaymentsToday 
+                ],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(255, 205, 86, 0.2)',
+                'rgba(201, 203, 207, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(153, 102, 255, 0.2)' 
+            ],
+            borderColor: [
+                'rgb(255, 99, 132)',
+                'rgb(75, 192, 192)',
+                'rgb(255, 205, 86)',
+                'rgb(201, 203, 207)',
+                'rgb(54, 162, 235)',
+                'rgb(153, 102, 255)' 
+            ],
+            borderWidth: 1
+        }]
+    };
+
+    const config = {
+        type: 'bar',
+        data: data,
+        options: {
+            scales: {
+                y: {
+                    beginAtZero: true
+                }
+            }
+        }
+    };
+
+    var barChart = new Chart(ctx, config);
+</script>
+
+
+
+
+<style>
+
+
+    #card {
+        border-radius: 6px;
+    }
+
+    .card {
+        border-radius: 20px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: all 0.3s ease;
+    }
+
+    .cardstatistics:hover {
+        transform: translateY(-5px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2);
+    }
+
+    .blue-border {
+        border-color: cyan
+    }
+
+    .blue-border {
+        box-shadow: 0 0 20px rgba(137, 196, 244)
+    }
+
+    .blue-border {
+        border: 1px solid cyan
+    }
+
+
+    .blue-border {
+        border-color: cyan;
+    }
+
+    .red-border {
+        border-color: darkred;
+    }
+
+    .red-border {
+        box-shadow: 0 0 20px rgba(137, 0, 0, 1)
+    }
+
+    .red-border {
+        border-color: darkred;
+    }
+
+
+    .red-border {
+        border-color: darkred;
+    }
+
+</style>

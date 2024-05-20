@@ -1,0 +1,97 @@
+html {
+  font-size: 14px;
+}
+
+@media (min-width: 768px) {
+  html {
+    font-size: 16px;
+  }
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+  position: relative;
+  min-height: 100%;
+}
+
+body {
+  margin-bottom: 60px;
+}
+
+
+
+.menu-hover-lines {
+    text-align: center;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 1px;
+    transition: all 0.35s ease;
+}
+
+    .menu-hover-lines li a {
+        padding: 0.75rem 0;
+        color: rgba(10, 10, 10, 0.5);
+        position: relative;
+        margin-left: 1rem;
+    }
+
+    .menu-hover-lines li:first-child a {
+        margin-left: 0;
+    }
+
+    .menu-hover-lines li.active > a {
+        background-color: transparent;
+    }
+
+    .menu-hover-lines a:before,
+    .menu-hover-lines a::after {
+        height: 3px;
+        position: absolute;
+        content: '';
+        transition: all 0.35s ease;
+        background-color: #1779ba;
+        width: 0;
+    }
+
+.menu {
+    list-style-type: none; /* Elimina los puntos de la lista */
+    padding: 0;
+    margin: 0;
+}
+
+    .menu li {
+        display: inline-block; /* Muestra los elementos de lista en línea */
+        margin-right: 10px; /* Añade un espacio entre los elementos */
+    }
+
+.menu-hover-lines a::before {
+    top: 0;
+    left: 0;
+}
+
+.menu-hover-lines a::after {
+    bottom: 0;
+    right: 0;
+}
+
+.menu-hover-lines a:hover,
+.menu-hover-lines li.active > a {
+    color: #0a0a0a;
+    transition: all 0.35s ease;
+}
+
+    .menu-hover-lines a:hover::before,
+    .menu-hover-lines .active a::before,
+    .menu-hover-lines a:hover::after,
+    .menu-hover-lines .active a::after {
+        width: 100%;
+    }
+
+#Image {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+}

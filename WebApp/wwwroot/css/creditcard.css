@@ -1,0 +1,48 @@
+﻿.card {
+    position: relative;
+    display: flex;
+    width: 395px;
+    flex-direction: column;
+    min-width: 0;
+    word-wrap: break-word;
+    background-color: #00709e;
+    background-clip: border-box;
+    border: 1px solid #23406f;
+    border-radius: 7px;
+}
+
+.light {
+    color: #393d42;
+    font-size: 11px;
+}
+
+.custom-card {
+    background-color: #00709e; /* o el color que desees */
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*esto es para el modal*/
+.btn-custom-color {
+    background-color: #ff9900; /* Color personalizado para los botones */
+    border-color: #ff9900; /* Color de borde personalizado para los botones */
+    color: #fff; /* Color de texto personalizado para los botones */
+}
+
+    .btn-custom-color:hover {
+        background-color: #e68a00; /* Color de fondo personalizado al pasar el ratón por encima */
+        border-color: #e68a00; /* Color de borde personalizado al pasar el ratón por encima */
+        color: #fff; /* Color de texto personalizado al pasar el ratón por encima */
+    }
+
